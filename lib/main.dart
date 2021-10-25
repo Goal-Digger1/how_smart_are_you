@@ -25,14 +25,18 @@ class Opening extends StatelessWidget {
           Container(
             height: 80.0,
             width: 250.0,
-            child: FloatingActionButton(
+            child: ElevatedButton(
               onPressed: () {  },
               child: const Text(
                 'Register to find out',
-                //style:
+                style: TextStyle(
+                    fontSize: 17.0,
+                    color: Colors.black,
+                ),
               ),
-              shape: BeveledRectangleBorder(),
-              backgroundColor: Colors.redAccent,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              )
             ),
           ),
         ],
