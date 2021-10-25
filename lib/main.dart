@@ -8,30 +8,35 @@ class Opening extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const Center(
-        child: Text(
-          "\n\n\n\nHow smart are you?",
-          style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'PlayfairDisplay'
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Image(
+            image: AssetImage('images/mainIcon.jpg'),
           ),
-        ),
-      ),
-      floatingActionButton: Container(
-        height: 80.0,
-        width: 250.0,
-        child: FloatingActionButton(
-          onPressed: () {  },
-          child: const Text(
-            'Register',
-            //style:
+          Text(
+            "How smart are you?",
+            style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'PlayfairDisplay'
+            ),
           ),
-          shape: BeveledRectangleBorder(),
-          backgroundColor: Colors.redAccent,
-        ),
+          Container(
+            height: 80.0,
+            width: 250.0,
+            child: FloatingActionButton(
+              onPressed: () {  },
+              child: const Text(
+                'Register to find out',
+                //style:
+              ),
+              shape: BeveledRectangleBorder(),
+              backgroundColor: Colors.redAccent,
+            ),
+          ),
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
