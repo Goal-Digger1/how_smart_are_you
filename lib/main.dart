@@ -12,5 +12,14 @@ void main() => runApp(MaterialApp(
         ),
       ),
     ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () {  },
+      child: const Text(
+        'Register',
+        //style:
+      ),
+
+      backgroundColor: Colors.redAccent,
+    ),
   ),
 ));
