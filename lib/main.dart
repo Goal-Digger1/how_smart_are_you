@@ -4,7 +4,7 @@ void main() => runApp(MaterialApp(
   home: Scaffold(
     body: const Center(
       child: Text(
-        'How smart are you?',
+        "\n\n\n\nHow smart are you?",
         style: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
@@ -12,14 +12,19 @@ void main() => runApp(MaterialApp(
         ),
       ),
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () {  },
-      child: const Text(
-        'Register',
-        //style:
+    floatingActionButton: Container(
+      height: 80.0,
+      width: 250.0,
+      child: FloatingActionButton(
+        onPressed: () {  },
+        child: const Text(
+          'Register',
+          //style:
+        ),
+        shape: BeveledRectangleBorder(),
+        backgroundColor: Colors.redAccent,
       ),
-
-      backgroundColor: Colors.redAccent,
     ),
+    floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
   ),
 ));
