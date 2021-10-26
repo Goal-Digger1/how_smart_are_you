@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:mysql_utils/mysql_utils.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
- void main (
-    )  {
+ void main (){
+   WidgetsFlutterBinding.ensureInitialized();
   initDB();
+  initHive();
  runApp(MaterialApp(
     home: Scaffold(
       body: const Center(
@@ -45,4 +48,8 @@ void initDB() async {
    //     var row = await db
    //     .query('select * from Username where id=?', [1]);
    // print(row);
+  }
+  void initHive() async {
+    await Hive.initFlutter();
+
   }
