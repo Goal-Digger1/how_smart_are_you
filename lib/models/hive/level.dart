@@ -8,10 +8,13 @@ class Level extends HiveObject {
   @HiveField(1)
   late int expRequired;
   @HiveField(2)
-  late List<int> questionIds;
+  late HiveList questions;
+  @HiveField(3)
+  late bool completed;
   Level({
     this.id = 0,
-    this.expRequired = 0,
-    this.questionIds = const [0,0,0,0,0],
+    this.expRequired = 0
   });
+  bool isCompleted() => this.completed;
+  updateStatus(bool value){this.completed=value;}
 }

@@ -10,11 +10,14 @@ class Category extends HiveObject {
   @HiveField(2)
   late String description;
   @HiveField(3)
-  late List<int> levelIDS;
+  late HiveList levels;
+  @HiveField(4)
+  late bool completed;
   Category({
     this.id = 0,
     this.title = '',
     this.description = '',
-    this.levelIDS = const [0,0,0,0]
   });
+  bool isCompleted() => this.completed;
+  updateStatus(bool value){this.completed=value;}
 }
