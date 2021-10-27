@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:how_smart_are_you/register.dart';
 
 void main() => runApp(MaterialApp(
   home: Opening(),
@@ -26,7 +27,9 @@ class Opening extends StatelessWidget {
             height: 80.0,
             width: 250.0,
             child: ElevatedButton(
-              onPressed: () {  },
+              onPressed: () { Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => Register()));
+               },
               child: const Text(
                 'Register to find out',
                 style: TextStyle(
