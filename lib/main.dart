@@ -10,7 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
    WidgetsFlutterBinding.ensureInitialized();
   initDB();
   initHive();
-  runApp(Opening());
+  runApp(MaterialApp(home: Opening()));
 }
 void initDB() async {
    String _add=dotenv.env['address'] ?? '';

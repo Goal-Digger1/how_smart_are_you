@@ -20,4 +20,9 @@ class UserData extends HiveObject {
         this.exp = 0,
         this.level = 0,
         this.version = 0});
+  addEXP(int xp){
+    int newLevel=100;
+    this.exp+=xp;
+    this.level= newLevel;//TODO: an actual function
+  }
 }
