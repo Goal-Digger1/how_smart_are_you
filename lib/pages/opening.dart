@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:how_smart_are_you/register.dart';
+import 'package:how_smart_are_you/pages/register.dart';
 
 class Opening extends StatelessWidget {
   @override
