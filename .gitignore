@@ -10,6 +10,8 @@
 .history
 .svn/
 
+pubspec.lock
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -31,9 +33,7 @@
 .pub-cache/
 .pub/
 /build/
-*.lock
 *.env
-pubspec.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
