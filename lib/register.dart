@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:how_smart_are_you/home.dart';
 
 class Register extends StatelessWidget {
   @override
@@ -35,7 +36,10 @@ class Register extends StatelessWidget {
             height: 80.0,
             width: 120.0,
             child: ElevatedButton(
-                onPressed: () {  },
+                onPressed: () {
+                      Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Home()));
+                },
                 child: const Text(
                   'Enter',
                   style: TextStyle(

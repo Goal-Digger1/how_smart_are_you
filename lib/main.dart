@@ -27,7 +27,8 @@ class Opening extends StatelessWidget {
             height: 80.0,
             width: 250.0,
             child: ElevatedButton(
-              onPressed: () { Navigator.pushReplacement(context,
+              onPressed: () {
+                  Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => Register()));
                },
               child: const Text(
