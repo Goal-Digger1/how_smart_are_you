@@ -10,20 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
    WidgetsFlutterBinding.ensureInitialized();
   initDB();
   initHive();
- runApp(MaterialApp(
-    home: Scaffold(
-      body: const Center(
-        child: Text(
-          'How smart are you?',
-          style: TextStyle(
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'PlayfairDisplay'
-          ),
-        ),
-      ),
-    ),
-  ));
+  runApp(Opening());
 }
 void initDB() async {
    String _add=dotenv.env['address'] ?? '';
