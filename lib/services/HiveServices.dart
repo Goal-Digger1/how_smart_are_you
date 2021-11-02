@@ -6,10 +6,10 @@ import 'package:how_smart_are_you/models/hive/question.dart';
 import 'package:how_smart_are_you/models/hive/user.dart';
 
 class HiveServices{
-  late final Box<UserData> user;
-  late final Box<Question> questions;
-  late final Box<Level> levels;
-  late final Box<Category> categories;
+  late final Box<UserData> userBox;
+  late final Box<Question> questionsBox;
+  late final Box<Level> levelsBox;
+  late final Box<Category> categoriesBox;
 
   static final HiveServices _instance = HiveServices._internal();
 
@@ -22,10 +22,15 @@ class HiveServices{
         ..registerAdapter(QuestionAdapter())
         ..registerAdapter(LevelAdapter())
         ..registerAdapter(CategoryAdapter());
-    user = await Hive.openBox<UserData>('user');
-    questions = await Hive.openBox<Question>('questions');
-    levels = await Hive.openBox<Level>('levels');
-    categories = await Hive.openBox<Category>('categories');
+    userBox = await Hive.openBox<UserData>('user');
+    questionsBox = await Hive.openBox<Question>('questions');
+    levelsBox = await Hive.openBox<Level>('levels');
+    categoriesBox = await Hive.openBox<Category>('categories');
+  }
+  UserData getUser() => userBox.get('user') ?? UserData();
+  void addUserToBox() {
+    final newUser = UserData();
+    _instance.userBox.put('user', newUser);
   }
 
 }
