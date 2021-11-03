@@ -12,12 +12,10 @@ import 'models/hive/user.dart';
    await Hive.initFlutter();
    await HiveServices().initHive();
 
-  runApp() => MyApp();
+  runApp(MyApp()) ;
 }
 
   class MyApp extends StatefulWidget {
-    const MyApp({Key? key}) : super(key: key);
-
     @override
     _MyAppState createState() => _MyAppState();
   }
@@ -25,13 +23,12 @@ import 'models/hive/user.dart';
   class _MyAppState extends State<MyApp> {
    @override
   void initState() {
-    // TODO: check for new Categories
     super.initState();
   }
     @override
     Widget build(BuildContext context) {
       return MaterialApp(
-        home: Opening() ,);
+        home: HiveServices().getUser().init ? Home():Opening() ,);
     }
   }
 

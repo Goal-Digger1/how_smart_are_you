@@ -36,7 +36,7 @@ class Sqlservices{
           print('|$sql\n├───────────────────────────');
         },
         connectInit: (db1) async {
-          print('whenComplete');
+          print('Connected to db');
         });
 
     //     var row = await db

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:how_smart_are_you/pages/register.dart';
+import 'package:how_smart_are_you/services/HiveServices.dart';
 
 class Opening extends StatelessWidget {
   @override
@@ -23,7 +24,9 @@ class Opening extends StatelessWidget {
             height: 80.0,
             width: 250.0,
             child: ElevatedButton(
-                onPressed: () { Navigator.pushReplacement(context,
+                onPressed: () {
+                  HiveServices().addNewUserToBox();
+                  Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Register()));
                 },
                 child: const Text(
