@@ -4,6 +4,7 @@ import 'package:how_smart_are_you/models/hive/category.dart';
 import 'package:how_smart_are_you/models/hive/level.dart';
 import 'package:how_smart_are_you/models/hive/question.dart';
 import 'package:how_smart_are_you/models/hive/user.dart';
+import 'package:how_smart_are_you/services/Mysqlservices.dart';
 
 class HiveServices{
   late final Box<UserData> userBox;
@@ -26,7 +27,6 @@ class HiveServices{
     questionsBox = await Hive.openBox<Question>('questions');
     levelsBox = await Hive.openBox<Level>('levels');
     categoriesBox = await Hive.openBox<Category>('categories');
-    await userBox.clear();
     print("Hive init");
   }
   UserData getUser() => userBox.get('user') ?? UserData();
@@ -45,6 +45,54 @@ class HiveServices{
   void printUser(){
     UserData _usr=_instance.getUser();
     print('User: '+_usr.nickname+' id: '+_usr.id.toString()+' level: '+_usr.level.toString()+' version: '+_usr.version.toString());
+  }
+  Future<int> checkVersion() async{
+    UserData _usr=_instance.getUser();
+     return Sqlservices().getVersion();
+  }
+  Future<void> checkData() async{
+    UserData _usr=_instance.getUser();
+     int _dbVersion =await _instance.checkVersion();
+    print("User:${_usr.version}, Db: $_dbVersion");
+    if(_usr.version < _dbVersion){
+      await _instance.importData(_dbVersion);
+      _usr.version = _dbVersion;
+      await _usr.save();
+    }
+    //print(categoriesBox.values);
+  }
+  Future<void> importData(int vrs) async{
+    //import from SQL
+    List<Category> newCategories = await Sqlservices().getNewCategories(vrs);
+    List<Level> newLevels = await Sqlservices().getNewLevels(vrs);
+    List<Question> newQuestions = await Sqlservices().getNewQuestions(vrs);
+    //add to boxes
+    newCategories.forEach((element) {
+      categoriesBox.put(element.id, element);
+    });
+    newLevels.forEach((element) {
+      levelsBox.put(element.id, element);
+    });
+    newQuestions.forEach((element) {
+      questionsBox.put(element.id, element);
+    });
+    //link Hive objects to hivelists
+    newCategories.forEach((element) { //add all Levels to the list Category.levels
+      element.levels=HiveList(levelsBox);
+      newLevels.forEach((element1) {
+        if(element1.categoryId == element.id){
+          element.levels.add(element1);
+        }
+      });
+    });
+    newLevels.forEach((element) { //add all Levels to the list Category.levels
+      element.questions=HiveList(questionsBox);
+      newQuestions.forEach((element1) {
+        if(element1.levelId == element.id){
+          element.questions.add(element1);
+        }
+      });
+    });
   }
 
 }

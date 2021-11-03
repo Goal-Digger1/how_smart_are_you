@@ -9,6 +9,11 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  @override
+  void initState() {
+    HiveServices().addNewUserToBox();
+    super.initState();
+  }
   final _formKey = GlobalKey<FormState>();
   String _value = '';
   @override
@@ -22,7 +27,6 @@ class _RegisterState extends State<Register> {
               height: 300,
               width: 300
           ),
-
           Form(
             key: _formKey,
             child: Column(
@@ -38,7 +42,7 @@ class _RegisterState extends State<Register> {
                   SizedBox(height: 10.0,width: 10.0),
                   TextFormField(
                     validator: (value){
-                      _value=value ?? '';
+                      _value = value ?? '';
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
                       }

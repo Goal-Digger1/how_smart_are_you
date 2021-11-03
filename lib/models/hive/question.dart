@@ -12,10 +12,22 @@ class Question extends HiveObject {
   late String correctAnswer;
   @HiveField(3)
   late List<String> wrongAnswers;
+  @HiveField(4)
+  late int levelId;
   Question({
         this.id = 0,
         this.statement = '',
         this.correctAnswer = '',
         this.wrongAnswers = const ['','',''],
+        this.levelId = 0,
         });
+  @override
+  String toString() {
+    return '|qid:'+this.id.toString()
+        // +'lid:'+this.levelId.toString()
+        // +',statement:'+this.statement
+        // +',correct:'+this.correctAnswer
+        // +',wrongs:'+this.wrongAnswers.toString()
+    ;
+  }
 }

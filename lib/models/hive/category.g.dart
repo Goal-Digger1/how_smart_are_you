@@ -20,9 +20,8 @@ class CategoryAdapter extends TypeAdapter<Category> {
       id: fields[0] as int,
       title: fields[1] as String,
       description: fields[2] as String,
-    )
-      ..levels = (fields[3] as HiveList).castHiveList()
-      ..completed = fields[4] as bool;
+      completed: fields[4] as bool,
+    )..levels = (fields[3] as HiveList).castHiveList();
   }
 
   @override
