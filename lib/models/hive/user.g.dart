@@ -22,13 +22,14 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       exp: fields[2] as int,
       level: fields[3] as int,
       version: fields[4] as int,
+      init: fields[5] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.nickname)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(3)
       ..write(obj.level)
       ..writeByte(4)
-      ..write(obj.version);
+      ..write(obj.version)
+      ..writeByte(5)
+      ..write(obj.init);
   }
 
   @override

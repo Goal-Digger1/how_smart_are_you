@@ -1,48 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:how_smart_are_you/pages/home.dart';
 import 'package:how_smart_are_you/pages/opening.dart';
 import 'package:hive/hive.dart';
 import 'package:how_smart_are_you/services/HiveServices.dart';
-import 'package:mysql_utils/mysql_utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:how_smart_are_you/services/Mysqlservices.dart';
+import 'models/hive/user.dart';
  void main () async {
-   await dotenv.load(fileName: ".env");
    WidgetsFlutterBinding.ensureInitialized();
-  initDB();
-  initHive();
-  runApp(MaterialApp(home: Opening()));
-}
-void initDB() async {
-   String _add=dotenv.env['address'] ?? '';
-   String? _psw=dotenv.env['password'];
+   await Sqlservices().initDB();
+   await Hive.initFlutter();
+   await HiveServices().initHive();
 
-   final db = MysqlUtils(
-        settings: ConnectionSettings(
-          host: _add,
-          port: 3306,
-          user: 'admin',
-          password: _psw,
-          db: 'howsmartareyou',
-          useCompression: false,
-          useSSL: false,
-          timeout: const Duration(seconds: 10),
-        ),
-        prefix: '',
-        pool: true,
-        errorLog: (error) {
-          print('|$error\n├───────────────────────────');
-        },
-        sqlLog: (sql) {
-          print('|$sql\n├───────────────────────────');
-        },
-        connectInit: (db1) async {
-          print('whenComplete');
-        });
-   //     var row = await db
-   //     .query('select * from Username where id=?', [1]);
-   // print(row);
+  runApp(MyApp()) ;
+}
+
+  class MyApp extends StatefulWidget {
+    @override
+    _MyAppState createState() => _MyAppState();
   }
-  void initHive() async {
-    await Hive.initFlutter();
-    HiveServices().initHive();
+
+  class _MyAppState extends State<MyApp> {
+   @override
+  void initState() {
+    super.initState();
   }
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(
+        home: HiveServices().getUser().init ? Home():Opening() ,);
+    }
+  }
+
