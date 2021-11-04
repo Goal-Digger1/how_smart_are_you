@@ -1,14 +1,95 @@
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
-  final categories = ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5"];
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: "DropDown Button Example - FlutterCorner",
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("DropDown Button Example - FlutterCorner"),
+          backgroundColor: Colors.black,
+        ),
+        body: HomePage(),
+      ),
+    );
+  }
+}
 
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  List<String> _animals = ["Level 1", "Level 2", "Level 3", "Level 3"];
+
+  String? _selectedColor;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      body: Center(
+        child: Container(
+          width: 300,
+          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(30)),
+          child: DropdownButton<String>(
+            onChanged: (value) {
+              setState(() {
+                _selectedColor = value;
+              });
+            },
+            value: _selectedColor,
 
+            // Hide the default underline
+            underline: Container(),
+            hint: Center(
+                child: Text(
+                  'Category 1',
+                  style: TextStyle(color: Colors.white),
+                )),
+            icon: Icon(
+              Icons.arrow_downward,
+              color: Colors.yellow,
+            ),
+            isExpanded: true,
+
+            // The list of options
+            items: _animals
+                .map((e) => DropdownMenuItem(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  e,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              value: e,
+            ))
+                .toList(),
+
+            // Customize the selected item
+            selectedItemBuilder: (BuildContext context) => _animals
+                .map((e) => Center(
+              child: Text(
+                e,
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.amber,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold),
+              ),
+            ))
+                .toList(),
+          ),
+        ),
       ),
-
     );
   }
 }
