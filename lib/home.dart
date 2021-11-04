@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> _animals = ["Level 1", "Level 2", "Level 3", "Level 3"];
+  List<String> _animals = ["Level 1", "Level 2", "Level 3", "Level 4"];
 
   String? _selectedColor;
 
@@ -37,8 +37,8 @@ class _HomePageState extends State<HomePage> {
           width: 300,
           padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(30)),
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(5)),
           child: DropdownButton<String>(
             onChanged: (value) {
               setState(() {
@@ -52,11 +52,11 @@ class _HomePageState extends State<HomePage> {
             hint: Center(
                 child: Text(
                   'Category 1',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.black),
                 )),
             icon: Icon(
               Icons.arrow_downward,
-              color: Colors.yellow,
+              color: Colors.black,
             ),
             isExpanded: true,
 
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                 e,
                 style: TextStyle(
                     fontSize: 18,
-                    color: Colors.amber,
+                    color: Colors.black,
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold),
               ),
