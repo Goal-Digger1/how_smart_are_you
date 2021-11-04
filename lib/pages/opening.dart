@@ -25,7 +25,6 @@ class Opening extends StatelessWidget {
             width: 250.0,
             child: ElevatedButton(
                 onPressed: () {
-                  HiveServices().addNewUserToBox();
                   Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => Register()));
                 },

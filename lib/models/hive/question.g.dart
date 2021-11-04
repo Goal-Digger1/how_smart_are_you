@@ -21,13 +21,14 @@ class QuestionAdapter extends TypeAdapter<Question> {
       statement: fields[1] as String,
       correctAnswer: fields[2] as String,
       wrongAnswers: (fields[3] as List).cast<String>(),
+      levelId: fields[4] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, Question obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class QuestionAdapter extends TypeAdapter<Question> {
       ..writeByte(2)
       ..write(obj.correctAnswer)
       ..writeByte(3)
-      ..write(obj.wrongAnswers);
+      ..write(obj.wrongAnswers)
+      ..writeByte(4)
+      ..write(obj.levelId);
   }
 
   @override

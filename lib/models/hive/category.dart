@@ -17,7 +17,17 @@ class Category extends HiveObject {
     this.id = 0,
     this.title = '',
     this.description = '',
+    this.completed = false,
   });
   bool isCompleted() => this.completed;
   updateStatus(bool value){this.completed=value;}
+  @override
+  String toString() {
+    return '\n\n|id:'+this.id.toString()
+        // +',title:'+this.title
+        // +',desc:'+this.description
+        +' '+this.completed.toString()
+        +', '+this.levels.length.toString()
+        +this.levels.toString();
+  }
 }

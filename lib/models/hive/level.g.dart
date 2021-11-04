@@ -19,15 +19,15 @@ class LevelAdapter extends TypeAdapter<Level> {
     return Level(
       id: fields[0] as int,
       expRequired: fields[1] as int,
-    )
-      ..questions = (fields[2] as HiveList).castHiveList()
-      ..completed = fields[3] as bool;
+      categoryId: fields[4] as int,
+      completed: fields[3] as bool,
+    )..questions = (fields[2] as HiveList).castHiveList();
   }
 
   @override
   void write(BinaryWriter writer, Level obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +35,9 @@ class LevelAdapter extends TypeAdapter<Level> {
       ..writeByte(2)
       ..write(obj.questions)
       ..writeByte(3)
-      ..write(obj.completed);
+      ..write(obj.completed)
+      ..writeByte(4)
+      ..write(obj.categoryId);
   }
 
   @override
