@@ -28,9 +28,13 @@ class HiveServices{
     levelsBox = await Hive.openBox<Level>('levels');
     categoriesBox = await Hive.openBox<Category>('categories');
     print("Hive init");
+    // await categoriesBox.clear();
+    // await levelsBox.clear();
+    // await questionsBox.clear();
+    // await userBox.clear();
   }
   UserData getUser() => userBox.get('user') ?? UserData();
-
+  int getUserVersion() => userBox.get('user')!.version;
   Future<void> addNewUserToBox() async {
     final newUser = UserData(init: true,level: 1);
     await _instance.userBox.put('user', newUser);
@@ -46,6 +50,9 @@ class HiveServices{
     UserData _usr=_instance.getUser();
     print('User: '+_usr.nickname+' id: '+_usr.id.toString()+' level: '+_usr.level.toString()+' version: '+_usr.version.toString());
   }
+  void printAll(){
+    print(categoriesBox.values.toString());
+  }
   Future<int> checkVersion() async{
     UserData _usr=_instance.getUser();
      return Sqlservices().getVersion();
@@ -55,13 +62,18 @@ class HiveServices{
      int _dbVersion =await _instance.checkVersion();
     print("User:${_usr.version}, Db: $_dbVersion");
     if(_usr.version < _dbVersion){
-      await _instance.importData(_dbVersion);
+      if((_dbVersion-_usr.version) > 1){
+        await categoriesBox.clear();
+        await levelsBox.clear();
+        await questionsBox.clear();
+      }
+      await _instance.importNewData(_dbVersion);
       _usr.version = _dbVersion;
       await _usr.save();
     }
-    //print(categoriesBox.values);
+    HiveServices().printAll();
   }
-  Future<void> importData(int vrs) async{
+  Future<void> importNewData(int vrs) async{
     //import from SQL
     List<Category> newCategories = await Sqlservices().getNewCategories(vrs);
     List<Level> newLevels = await Sqlservices().getNewLevels(vrs);
@@ -94,5 +106,7 @@ class HiveServices{
       });
     });
   }
-
+  List<Category> getAllCategories(){
+    return categoriesBox.values.toList();
+  }
 }

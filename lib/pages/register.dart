@@ -60,7 +60,7 @@ class _RegisterState extends State<Register> {
                 onPressed: () {
                   if(_formKey.currentState!.validate()){
                     HiveServices().setUsername(_value);
-                    HiveServices().printUser();
+                    //HiveServices().printUser();
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => Home()));
                   }
