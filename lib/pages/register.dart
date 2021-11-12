@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:how_smart_are_you/pages/home.dart';
+import 'package:how_smart_are_you/pages/home/home.dart';
 import 'package:how_smart_are_you/services/HiveServices.dart';
 class Register extends StatefulWidget {
 
