@@ -71,7 +71,7 @@ class HiveServices{
       _usr.version = _dbVersion;
       await _usr.save();
     }
-    HiveServices().printAll();
+    //HiveServices().printAll();
   }
   Future<void> importNewData(int vrs) async{
     //import from SQL

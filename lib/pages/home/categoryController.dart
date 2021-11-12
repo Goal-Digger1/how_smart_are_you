@@ -3,27 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:how_smart_are_you/models/hive/category.dart';
 import 'package:how_smart_are_you/models/hive/level.dart';
 import 'package:how_smart_are_you/pages/home/categoryTile.dart';
+import 'package:how_smart_are_you/pages/home/level_list.dart';
 import 'package:how_smart_are_you/services/HiveServices.dart';
-class CategoryController extends StatelessWidget {
-  bool _isExpandable = false;
-
+class CategoryController extends StatefulWidget {
   final Category cat;
-  Widget? _trailing = Icon(Icons.lock);
+
   CategoryController({
       required this.cat,
       });
+
+  @override
+  State<CategoryController> createState() => _CategoryControllerState();
+}
+
+class _CategoryControllerState extends State<CategoryController> {
+  bool _isExpandable = false;
+
+  Widget? _trailing = Icon(Icons.lock);
+
   void _checkExpandable(){
     var userXP=HiveServices().getUser().exp;
-    for(Level x in cat.levels.cast())
+    for(Level x in widget.cat.levels.cast())
       {
         if(x.expRequired <= userXP){
           _isExpandable = true;
-          _trailing= Icon(Icons.list);
-          if(cat.completed) _trailing=Icon(Icons.check);
+          _trailing= Icon(Icons.arrow_drop_down);
+          if(widget.cat.completed) _trailing=Icon(Icons.check);
           break;
         }
       }
   }
+
   @override
   Widget build(BuildContext context) {
     _checkExpandable();
@@ -32,7 +42,7 @@ class CategoryController extends StatelessWidget {
       child: Expandable(
         collapsed: ExpandableButton(
           child: CategoryTile(
-            cat: cat,
+            cat: widget.cat,
             trailing: _trailing,
             disabled: false,
           ),
@@ -41,23 +51,20 @@ class CategoryController extends StatelessWidget {
           children: [
             ExpandableButton(
               child: CategoryTile(
-                cat: cat,
-                trailing: _trailing,
+                cat: widget.cat,
+                trailing: Icon(Icons.arrow_drop_up),
                 disabled: false,
               ),
             ),
-              Container(
-                height: 70,
-                width: 50,
-                color: Colors.orange,
-              )
+            ScrollOnExpand(
+                child: LevelList(levels: widget.cat.levels.cast(),)),
             // <-- Collapses when tapped on
           ],
         ),
       ),
     )
         : CategoryTile(
-      cat: cat,
+      cat: widget.cat,
       trailing: _trailing,
       disabled: true,
     );
