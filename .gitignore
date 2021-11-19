@@ -10,10 +10,6 @@
 .history
 .svn/
 .env
-*.lock
-
-pubspec.lock
-
 # IntelliJ related
 *.iml
 *.ipr
