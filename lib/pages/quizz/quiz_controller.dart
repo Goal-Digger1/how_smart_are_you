@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:how_smart_are_you/models/hive/level.dart';
 import 'package:how_smart_are_you/models/hive/question.dart';
+import 'package:how_smart_are_you/pages/home/home.dart';
+import 'package:how_smart_are_you/pages/quizz/answer.dart';
 import 'package:how_smart_are_you/services/QuizServices.dart';
 import 'package:how_smart_are_you/services/WidgetService.dart';
 import 'package:how_smart_are_you/services/ui.dart';
@@ -16,11 +18,36 @@ class _QuizControllerState extends State<QuizController> {
   List<Icon> _scoreIcons = [];
   late Question _q;
   late List<String> _randomAnswers;
-
+  int _index = 0;
+  bool answerSelected = false;
   void init(){
     QuizServices().setLevel(widget.level);
     _q = QuizServices().getCurrentQuestion();
     _randomAnswers = QuizServices().getRandomAnswers();
+  }
+  void goNext(bool done) async{
+    if(done){
+      await  QuizServices().completeQuiz();
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => Home()));
+    }
+    else{
+      QuizServices().next();
+    }
+
+  }
+  void _answerTapped(String s) async{
+    bool retVal = QuizServices().submit(s);
+    //await QuizServices().next();
+    //print("Question ret val "+retVal.toString());
+    setState(() {
+      _scoreIcons.add(retVal ? Icon(
+        Icons.check_circle,color: AppColors.Green,
+      ) : Icon(
+        Icons.clear, color: AppColors.Red,
+      ));
+      answerSelected = true;
+    });
   }
 
   @override
@@ -67,98 +94,40 @@ class _QuizControllerState extends State<QuizController> {
                   ),
                 ),
               ),
-              InkWell(
-                onTap: (){},
-                child: Container(
-                  padding: EdgeInsets.all(15),
-                margin: EdgeInsets.symmetric(vertical: 5,
-                horizontal: AppMargins.General),
-                decoration: BoxDecoration(
-                  color: null,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.Blue)
-                ),
-                  child: Center(
-                    child: Text(
-                      _randomAnswers[0],
-                      style: TextStyle(
-                        fontSize: 15
-                      ),
-                    ),
-                  ),
-                )
-              ),
-              InkWell(
-                  onTap: (){},
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.symmetric(vertical: 5,
-                        horizontal: AppMargins.General),
-                    decoration: BoxDecoration(
-                        color: null,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.Blue)
-                    ),
-                    child: Center(
-                      child: Text(
-                        _randomAnswers[1],
-                        style: TextStyle(
-                            fontSize: 15
-                        ),
-                      ),
-                    ),
-                  )
-              ),
-              InkWell(
-                  onTap: (){},
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.symmetric(vertical: 5,
-                        horizontal: AppMargins.General),
-                    decoration: BoxDecoration(
-                        color: null,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.Blue)
-                    ),
-                    child: Center(
-                      child: Text(
-                        _randomAnswers[2],
-                        style: TextStyle(
-                            fontSize: 15
-                        ),
-                      ),
-                    ),
-                  )
-              ),
-              InkWell(
-                  onTap: (){},
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.symmetric(vertical: 5,
-                        horizontal: AppMargins.General),
-                    decoration: BoxDecoration(
-                        color: null,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: AppColors.Blue)
-                    ),
-                    child: Center(
-                      child: Text(
-                        _randomAnswers[3],
-                        style: TextStyle(
-                            fontSize: 15
-                        ),
-                      ),
-                    ),
-                  )
-              ),
+              ..._randomAnswers.map(
+                      (answer) => Answer(text: answer,
+                        answerColor: answerSelected ? (answer == _q.correctAnswer) ?
+                        AppColors.Green : AppColors.RedLight : null ,
+                        tapfuntion: (){
+                        print("Clicked on answer:"+answer);
+                        if(!answerSelected) _answerTapped(answer);
+                        },)),
               SizedBox(height: 10,),
               ElevatedButton(
-                  onPressed: (){},
-                  child: Text("Next question")),
+                  onPressed: (){
+                    setState(() {
+
+                      if(QuizServices().isLast())
+                        {
+                          goNext(true);
+
+                        }
+                      else{
+                        goNext(false);
+                        _q = QuizServices().getCurrentQuestion();
+                        _randomAnswers = QuizServices().getRandomAnswers();
+                      }
+                      answerSelected = false;
+                    });
+                  },
+                  child: Text(
+              (QuizServices().getIndex() != widget.level.questions.length-1 ) ?
+              "Next question" : "End quiz"
+                  )),
               Container(
                 padding: EdgeInsets.all(AppMargins.General),
                 child: Text(
-                    QuizServices().getScore().toString()+"/"+
+                  (QuizServices().getIndex()+1).toString()+"/"+
                     widget.level.questions.length.toString(),
                   style: TextStyle(
                     fontSize: 40,fontWeight: FontWeight.bold

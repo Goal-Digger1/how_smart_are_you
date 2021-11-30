@@ -22,7 +22,7 @@ class LevelTile extends StatelessWidget {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => QuizController(level: level,)));
+                  builder: (context) => QuizIntro(level: level,)));
         },
         child: Card(
             color: AppColors.Greenlight,

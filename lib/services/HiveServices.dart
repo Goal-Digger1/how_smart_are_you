@@ -41,7 +41,11 @@ class HiveServices{
     await _instance.userBox.put('user', newUser);
     print("Added a user with" + newUser.exp.toString()+" xp!");
   }
-
+  Future<void> addXp(int n) async{
+    UserData _usr=_instance.getUser();
+    _usr.exp+=n;
+    await _usr.save();
+  }
   Future<void> setUsername (String username) async{
     UserData _usr=_instance.getUser();
     _usr.nickname=username;

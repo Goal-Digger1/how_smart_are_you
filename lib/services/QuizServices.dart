@@ -2,6 +2,7 @@
 
 import 'package:how_smart_are_you/models/hive/level.dart';
 import 'package:how_smart_are_you/models/hive/question.dart';
+import 'package:how_smart_are_you/services/HiveServices.dart';
 
 class QuizServices{
   static final QuizServices _instance = QuizServices._internal();
@@ -23,34 +24,48 @@ class QuizServices{
   }
   String getStatement() => currentQuestion.statement;
   int getScore() => _score;
+  int getIndex() => _index;
   Question getCurrentQuestion() => currentQuestion;
-  Future<int> next(String answer) async{
-    if(answer == currentQuestion.correctAnswer) _score++;
-    if (_index < _questions.length) {
+  bool submit(String answer){
+    if(answer == currentQuestion.correctAnswer){
+      _score++;
+      return true;
+    }
+    else return false;
+  }
+  bool isLast(){
+    if (_index == (_questions.length-1)) return true;
+    else return false;
+  }
+  Future<void> completeQuiz() async{
+    if(_score > _questions.length / 2){
+      print("Passes with > 50%");
+      if(!_lvl.isCompleted()){
+        HiveServices().addXp(20);
+      }
+      _lvl.updateStatus(true);
+      await _lvl.save();
+    }
+  }
+  int next() {
+    if (_index < (_questions.length-1)) {
       _index++;
       currentQuestion = _questions.elementAt(_index);
-      return 0; //nui gata
-    }
-    if(_index == _questions.length) {
-      if(_score > _questions.length / 2){
-        _lvl.updateStatus(true);
-        await _lvl.save();
-        return 1; //trecut
-      }
+      return 0;
     }
       return -1; //picat
   }
   int getLength() => _questions.length;
   List<String> getRandomAnswers(){
-    print("CurQWR"+currentQuestion.wrongAnswers.toString());
-    print("CurQCor"+currentQuestion.correctAnswer);
+    //print("CurQWR"+currentQuestion.wrongAnswers.toString());
+    //print("CurQCor"+currentQuestion.correctAnswer);
     _answers = [ currentQuestion.wrongAnswers[0],
       currentQuestion.wrongAnswers[1],
       currentQuestion.wrongAnswers[2],
       currentQuestion.correctAnswer
     ];
     _answers.shuffle();
-    print(_answers);
+    //print(_answers);
     return _answers;
   }
 }
