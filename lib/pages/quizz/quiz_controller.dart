@@ -72,8 +72,7 @@ class _QuizControllerState extends State<QuizController> {
     init();
     super.initState();
   }
-
-  @override
+ @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  WidgetService().getAppbar(context),
