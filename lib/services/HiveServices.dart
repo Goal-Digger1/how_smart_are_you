@@ -28,13 +28,23 @@ class HiveServices{
     levelsBox = await Hive.openBox<Level>('levels');
     categoriesBox = await Hive.openBox<Category>('categories');
     print("Hive init");
-    // await categoriesBox.clear();
-    // await levelsBox.clear();
-    // await questionsBox.clear();
-    // await userBox.clear();
+    await categoriesBox.clear();
+    await levelsBox.clear();
+    await questionsBox.clear();
+    await userBox.clear();
   }
   UserData getUser() => userBox.get('user') ?? UserData();
   int getUserVersion() => userBox.get('user')!.version;
+  Future<bool> checkCat(int catId) async{
+      Category cat = categoriesBox.get(catId) ?? Category();
+      //print(cat);
+      for(Level lvl in cat.levels.cast()){
+        if(!lvl.completed) return false;
+      }
+      cat.updateStatus(true);
+      await cat.save();
+      return true;
+  }
   Future<void> addNewUserToBox() async {
     final newUser = UserData(init: true,level: 1);
     newUser.exp = 100;

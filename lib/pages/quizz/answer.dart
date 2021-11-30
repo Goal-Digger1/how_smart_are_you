@@ -24,7 +24,7 @@ class Answer extends StatelessWidget {
             child: Text(
               text,
               style: TextStyle(
-                  fontSize: 15
+                  fontSize: AppFontSizes.M
               ),
             ),
           ),

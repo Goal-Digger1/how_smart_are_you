@@ -3,6 +3,7 @@ import 'package:how_smart_are_you/models/hive/level.dart';
 import 'package:how_smart_are_you/models/hive/question.dart';
 import 'package:how_smart_are_you/pages/home/home.dart';
 import 'package:how_smart_are_you/pages/quizz/answer.dart';
+import 'package:how_smart_are_you/services/HiveServices.dart';
 import 'package:how_smart_are_you/services/QuizServices.dart';
 import 'package:how_smart_are_you/services/WidgetService.dart';
 import 'package:how_smart_are_you/services/ui.dart';
@@ -20,6 +21,8 @@ class _QuizControllerState extends State<QuizController> {
   late List<String> _randomAnswers;
   int _index = 0;
   bool answerSelected = false;
+  Color endTextBoxColor = Colors.white;
+  String endText= "";
   void init(){
     QuizServices().setLevel(widget.level);
     _q = QuizServices().getCurrentQuestion();
@@ -28,6 +31,7 @@ class _QuizControllerState extends State<QuizController> {
   void goNext(bool done) async{
     if(done){
       await  QuizServices().completeQuiz();
+      await HiveServices().checkCat(widget.level.categoryId);
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => Home()));
     }
@@ -38,9 +42,19 @@ class _QuizControllerState extends State<QuizController> {
   }
   void _answerTapped(String s) async{
     bool retVal = QuizServices().submit(s);
+
     //await QuizServices().next();
     //print("Question ret val "+retVal.toString());
     setState(() {
+      if(retVal){
+        endText="You got it right! ";
+        endTextBoxColor = AppColors.Green;
+
+      }
+      else{
+        endText="Wrong Choice , oof";
+        endTextBoxColor = AppColors.Red;
+      }
       _scoreIcons.add(retVal ? Icon(
         Icons.check_circle,color: AppColors.Green,
       ) : Icon(
@@ -48,6 +62,9 @@ class _QuizControllerState extends State<QuizController> {
       ));
       answerSelected = true;
     });
+    if(QuizServices().isLast()){
+      showDialogFunction(context,QuizServices().passed());
+    }
   }
 
   @override
@@ -88,7 +105,7 @@ class _QuizControllerState extends State<QuizController> {
                   child: Text(
                     _q.statement,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: AppFontSizes.XL,
                       fontWeight: FontWeight.bold
                     ),
                   ),
@@ -99,7 +116,7 @@ class _QuizControllerState extends State<QuizController> {
                         answerColor: answerSelected ? (answer == _q.correctAnswer) ?
                         AppColors.Green : AppColors.RedLight : null ,
                         tapfuntion: (){
-                        print("Clicked on answer:"+answer);
+                        //print("Clicked on answer:"+answer);
                         if(!answerSelected) _answerTapped(answer);
                         },)),
               SizedBox(height: 10,),
@@ -109,20 +126,24 @@ class _QuizControllerState extends State<QuizController> {
 
                       if(QuizServices().isLast())
                         {
-                          goNext(true);
+                          if(answerSelected) goNext(true);
 
                         }
                       else{
+                        if(answerSelected){
                         goNext(false);
                         _q = QuizServices().getCurrentQuestion();
-                        _randomAnswers = QuizServices().getRandomAnswers();
+                        _randomAnswers = QuizServices().getRandomAnswers();}
                       }
                       answerSelected = false;
                     });
                   },
                   child: Text(
               (QuizServices().getIndex() != widget.level.questions.length-1 ) ?
-              "Next question" : "End quiz"
+              "Next question" : "End quiz" ,
+                    style: TextStyle(
+                      fontSize: AppFontSizes.L
+                    ),
                   )),
               Container(
                 padding: EdgeInsets.all(AppMargins.General),
@@ -130,14 +151,60 @@ class _QuizControllerState extends State<QuizController> {
                   (QuizServices().getIndex()+1).toString()+"/"+
                     widget.level.questions.length.toString(),
                   style: TextStyle(
-                    fontSize: 40,fontWeight: FontWeight.bold
+                    fontSize: 2*AppFontSizes.XL,fontWeight: FontWeight.bold
                   ),
                 ),
-              )
+              ),
+              answerSelected ?
+              Container(
+                height: 50,
+                width: double.infinity,
+                color: endTextBoxColor,
+                child: Center(
+                  child: Text(
+                    endText,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppFontSizes.M
+                    ),
+                  ),
+                ),
+              ) : Container(),
             ],
           ),
       ),
 
     );
   }
+}
+showDialogFunction(context,retVal){
+  return showDialog(
+      context: context,
+      builder: (context){
+            return Center(
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: Container(
+                      padding: EdgeInsets.all(AppMargins.General),
+                      width: MediaQuery.of(context).size.width *0.7,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: retVal ? AppColors.Greenlight : AppColors.RedLight,
+                      ),
+                      child: Center(
+                        child: Text(
+                            retVal ? "Good job you completed this level!" : "Sorry, you need >50% to pass try again",
+                          style: TextStyle(
+                             fontSize: AppFontSizes.XL,
+                              fontWeight: FontWeight.bold,
+                            ),
+                        ),
+                      ),
+                    ),
+                  ),
+            );
+          }
+
+  );
 }

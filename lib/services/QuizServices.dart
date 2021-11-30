@@ -37,8 +37,10 @@ class QuizServices{
     if (_index == (_questions.length-1)) return true;
     else return false;
   }
+  bool passed() => _score > _questions.length / 2;
   Future<void> completeQuiz() async{
     if(_score > _questions.length / 2){
+      await HiveServices().checkCat(_lvl.categoryId);
       print("Passes with > 50%");
       if(!_lvl.isCompleted()){
         HiveServices().addXp(20);
