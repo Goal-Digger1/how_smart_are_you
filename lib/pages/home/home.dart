@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
                     children: [
                       CircleAvatar(
                         radius: 40,
-                        backgroundColor: Colors.deepOrangeAccent,
+                        backgroundColor: Colors.red,
                         child: Text(
                           HiveServices().getUser().nickname,
                           style: TextStyle(
