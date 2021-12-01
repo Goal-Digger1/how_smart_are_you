@@ -17,9 +17,15 @@ class QuizIntro extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text('Are you ready for this challenge?',
+              style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'PlayfairDisplay'
+              ),),
             Container(
               height: 80.0,
               width: 200.0,

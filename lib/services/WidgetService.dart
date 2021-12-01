@@ -8,7 +8,8 @@ class WidgetService{
   AppBar getAppbar(BuildContext context){
     return AppBar(
       centerTitle: true,
-      toolbarHeight: 50,
+      toolbarHeight: 55,
+      backgroundColor: Colors.white,
       elevation: 0,
       actions: [
         Padding(
@@ -21,9 +22,15 @@ class WidgetService{
                       alignment: Alignment.center,
                       iconSize: 24,
                       onPressed: (){},
-                      icon: Icon(Icons.settings))
+                      icon: Icon(Icons.alternate_email,
+                      color: Colors.black,))
               ),
-              Text("Settings")
+              Text('Credits',
+              style: TextStyle(
+                color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'PlayfairDisplay'
+              ),)
             ],
           ),
         )],
@@ -40,18 +47,32 @@ class WidgetService{
                 onPressed: (){
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => Home()));},
-                icon: Icon(Icons.home,),),
+                icon: Icon(Icons.home,
+                color: Colors.black,),),
             ),
-            Text('Home')
+            Text('Home',
+            style: TextStyle(
+              color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'PlayfairDisplay'
+            ))
           ],
         ),
       ),
       title: Column(
         children: [
+          Image(
+            image: AssetImage('images/mainIcon.jpg'),
+            height: 35,
+            width: 35,
+          ),
           Text(
             "How smart are you?",
             style: TextStyle(
-                fontSize: 16
+              color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'PlayfairDisplay'
             ),
           ),
         ],

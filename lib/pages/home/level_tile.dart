@@ -27,7 +27,7 @@ class LevelTile extends StatelessWidget {
 
         },
         child: Card(
-            color: AppColors.Greenlight,
+            color: AppColors.Green,
             elevation: 0,
             child: Padding(
               padding: EdgeInsets.all(AppMargins.General),
@@ -86,6 +86,7 @@ class LevelTile extends StatelessWidget {
 
       },
       child: Card(
+        color: AppColors.RedLight,
           elevation: 0,
           child: Padding(
             padding: EdgeInsets.all(AppMargins.General),

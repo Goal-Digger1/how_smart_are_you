@@ -16,8 +16,8 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color bgColor=(this.disabled ?  AppColors.GreyLight300 : cat.completed ? AppColors.Green : AppColors.RedLight);
-    final Color textColor=(this.disabled ? AppColors.Grey : AppColors.Blue);
+    final Color bgColor=(this.disabled ?  AppColors.GreyLight300 : cat.completed ? AppColors.Green : AppColors.Red);
+    final Color textColor=(this.disabled ? AppColors.Grey : Colors.black);
     final double opacity = (this.disabled ? 0.9 : 1.0);
     return Opacity(
       opacity: opacity,
