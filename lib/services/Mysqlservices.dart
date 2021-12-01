@@ -63,9 +63,15 @@ try {
 
   Future<List<Category>> getNewCategories(int vrs) async {
     var rows;
-
+    if ((vrs - HiveServices().getUserVersion()) == 1)
+    {
+      rows = await _db.query(
+          'select id,description,name from Category where version=?', [vrs]);
+    }
+    else{
       rows = await _db.query(
           'select id,description,name from Category ',[]);
+    }
       List<Category> _list = [];
       for (var row in rows) {
         var _temp = row.toList();
@@ -81,11 +87,17 @@ try {
 
   Future<List<Level>> getNewLevels(int vrs) async {
     var rows;
-
+    if( ((vrs - HiveServices().getUserVersion()) == 1) ){
+      rows = await _db.query('select id,category_id,xpRequirement from Level '
+          'where category_id in (select id from Category where version=?) '
+          'order by category_id ASC',
+          [vrs]);
+    }
+    else{
       rows = await _db.query('select id,category_id,xpRequirement from Level '
           'order by category_id ASC',
-          []);
-
+          [vrs]);
+    }
     List<Level> _list = [];
     for (var row in rows) {
       var _temp = row.toList();
@@ -100,9 +112,18 @@ try {
 
   Future<List<Question>> getNewQuestions(int vrs) async {
     var rows;
-
-      rows = await _db.query('select * from Question order by level_id ASC ',
-          []);
+    if( ((vrs - HiveServices().getUserVersion()) == 1) ){
+      rows = await _db.query('select * from Question '
+          'where level_id in '
+          '(select id from Level where category_id in '
+          '(select id from Category where version=?)) '
+          'order by level_id ASC',
+          [vrs]);
+    }
+    else{
+      rows = await _db.query('select * from Question ',
+          [vrs]);
+    }
     List<Question> _list = [];
     for (var row in rows) {
       var _temp = row.toList();

@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
-     checkData();
+    checkData();
     super.initState();
   }
   @override
@@ -90,4 +90,8 @@ class _HomeState extends State<Home> {
 }
 Future<void> checkData() async{
   await HiveServices().checkData();
+  UserData usr = HiveServices().getUser();
+  usr.exp = 150;
+  await usr.save();
+  print(usr.exp);
 }

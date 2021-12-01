@@ -28,35 +28,20 @@ class HiveServices{
     levelsBox = await Hive.openBox<Level>('levels');
     categoriesBox = await Hive.openBox<Category>('categories');
     print("Hive init");
-    await categoriesBox.clear();
-    await levelsBox.clear();
-    await questionsBox.clear();
-    await userBox.clear();
+    // await categoriesBox.clear();
+    // await levelsBox.clear();
+    // await questionsBox.clear();
+    // await userBox.clear();
   }
   UserData getUser() => userBox.get('user') ?? UserData();
   int getUserVersion() => userBox.get('user')!.version;
-  Future<bool> checkCat(int catId) async{
-      Category cat = categoriesBox.get(catId) ?? Category();
-      //print(cat);
-      for(Level lvl in cat.levels.cast()){
-        if(!lvl.completed) return false;
-      }
-      cat.updateStatus(true);
-      await cat.save();
-      return true;
-  }
   Future<void> addNewUserToBox() async {
     final newUser = UserData(init: true,level: 1);
-    newUser.exp = 100;
     await _instance.userBox.put('user', newUser);
-    print("Added a user with" + newUser.exp.toString()+" xp!");
+    print("Added a user");
   }
-  Future<void> addXp(int n) async{
-    UserData _usr=_instance.getUser();
-    _usr.exp+=n;
-    await _usr.save();
-  }
-  Future<void> setUsername (String username) async{
+
+  void setUsername (String username) async{
     UserData _usr=_instance.getUser();
     _usr.nickname=username;
     await _usr.save();
@@ -68,20 +53,23 @@ class HiveServices{
   void printAll(){
     print(categoriesBox.values.toString());
   }
+  Future<int> checkVersion() async{
+    UserData _usr=_instance.getUser();
+     return Sqlservices().getVersion();
+  }
   Future<void> checkData() async{
     UserData _usr=_instance.getUser();
-     int _dbVersion =await Sqlservices().getVersion();
+     int _dbVersion =await _instance.checkVersion();
     print("User:${_usr.version}, Db: $_dbVersion");
     if(_usr.version < _dbVersion){
-      {
+      if((_dbVersion-_usr.version) > 1){
         await categoriesBox.clear();
         await levelsBox.clear();
         await questionsBox.clear();
-        await _instance.importNewData(_dbVersion);
-        _usr.version = _dbVersion;
-        await _usr.save();
       }
-
+      await _instance.importNewData(_dbVersion);
+      _usr.version = _dbVersion;
+      await _usr.save();
     }
     //HiveServices().printAll();
   }

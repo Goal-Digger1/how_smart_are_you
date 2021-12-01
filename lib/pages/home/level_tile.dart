@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:how_smart_are_you/models/hive/level.dart';
 import 'package:how_smart_are_you/pages/quizz/quiz_controller.dart';
-import 'package:how_smart_are_you/pages/quizz/quiz_opening.dart';
 import 'package:how_smart_are_you/services/HiveServices.dart';
 import 'package:how_smart_are_you/services/ui.dart';
 
@@ -22,9 +21,7 @@ class LevelTile extends StatelessWidget {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-
-                  builder: (context) => QuizIntro(level: level,)));
-
+                  builder: (context) => QuizController(level: level,)));
         },
         child: Card(
             color: AppColors.Greenlight,
@@ -81,9 +78,7 @@ class LevelTile extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-
-                builder: (context) => QuizIntro(level: level,)));
-
+                builder: (context) => QuizController(level: level,)));
       },
       child: Card(
           elevation: 0,

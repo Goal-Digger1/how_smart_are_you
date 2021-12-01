@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:how_smart_are_you/pages/home/home.dart';
 import 'package:how_smart_are_you/services/HiveServices.dart';
-import 'package:how_smart_are_you/services/ui.dart';
 class Register extends StatefulWidget {
 
 
@@ -10,11 +9,6 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-
-  void setName(String s)async{
-    await HiveServices().setUsername(s);
-  }
-
   @override
   void initState() {
     HiveServices().addNewUserToBox();
@@ -46,18 +40,15 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   SizedBox(height: 10.0,width: 10.0),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppMargins.General),
-                    child: TextFormField(
-                      validator: (value){
-                        _value = value ?? '';
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        //TODO: check for unique in DB
-                        return null;
-                      },
-                    ),
+                  TextFormField(
+                    validator: (value){
+                      _value = value ?? '';
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      //TODO: check for unique in DB
+                      return null;
+                    },
                   ),
                 ]
             ),
@@ -66,9 +57,9 @@ class _RegisterState extends State<Register> {
             height: 80.0,
             width: 120.0,
             child: ElevatedButton(
-                onPressed:  ()  {
+                onPressed: () {
                   if(_formKey.currentState!.validate()){
-                     setName(_value);
+                    HiveServices().setUsername(_value);
                     //HiveServices().printUser();
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => Home()));
