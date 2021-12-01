@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:how_smart_are_you/pages/credits.dart';
 import 'package:how_smart_are_you/pages/home/home.dart';
 class WidgetService{
   static final WidgetService _instance = WidgetService._internal();
@@ -21,7 +22,9 @@ class WidgetService{
                       padding: EdgeInsets.zero,
                       alignment: Alignment.center,
                       iconSize: 24,
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Credits()));},
                       icon: Icon(Icons.alternate_email,
                       color: Colors.black,))
               ),
