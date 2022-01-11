@@ -23,7 +23,7 @@ class CategoryTile extends StatelessWidget {
       opacity: opacity,
       child: Container(
         margin: EdgeInsets.all(AppMargins.General),
-        height: 100,
+        height: 110,
         decoration: BoxDecoration(
             color: bgColor,
             borderRadius: BorderRadius.all(Radius.circular(10.0))),

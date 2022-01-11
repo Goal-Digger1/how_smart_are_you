@@ -28,10 +28,10 @@ class HiveServices{
     levelsBox = await Hive.openBox<Level>('levels');
     categoriesBox = await Hive.openBox<Category>('categories');
     print("Hive init");
-    await categoriesBox.clear();
-    await levelsBox.clear();
-    await questionsBox.clear();
-    await userBox.clear();
+    // await categoriesBox.clear();
+    // await levelsBox.clear();
+    // await questionsBox.clear();
+    // await userBox.clear();
   }
   UserData getUser() => userBox.get('user') ?? UserData();
   int getUserVersion() => userBox.get('user')!.version;
@@ -109,7 +109,7 @@ class HiveServices{
         }
       });
     });
-    newLevels.forEach((element) { //add all Levels to the list Category.levels
+    newLevels.forEach((element) { //add all Questions to the list Level.questions
       element.questions=HiveList(questionsBox);
       newQuestions.forEach((element1) {
         if(element1.levelId == element.id){
